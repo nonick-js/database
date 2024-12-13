@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { Snowflake } from './util';
 
+const domainRegex = /^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
+
 const AutoModConfig = z
   .object({
     enabled: z.boolean(),
@@ -11,8 +13,11 @@ const AutoModConfig = z
           (v) =>
             String(v)
               .split(/,|\n/)
-              .map((v) => v.trim())
-              .filter((v) => !!v),
+              .reduce<string[]>((acc, item) => {
+                const trimmed = item.trim();
+                if (trimmed) acc.push(trimmed);
+                return acc;
+              }, []),
           z.array(z.string()).max(20, '20個以上のドメインを登録することはできません'),
         ),
       }),
@@ -29,8 +34,6 @@ const AutoModConfig = z
     }),
   })
   .superRefine((v, ctx) => {
-    const domainRegex = /^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
-
     if (!v.filter.domain.list.every((v) => domainRegex.test(v))) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
