@@ -10,8 +10,10 @@
     "discord.js": "^14.18.0",
     "drizzle-orm": "^0.41.0",
     "drizzle-zod": "^0.7.1",
+    "i18next": "^24.2.3",
     "mongoose": "^8.0.3",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "zod-i18n-map": "^2.27.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4"
