@@ -1,8 +1,7 @@
-﻿import type { BaseMessageOptions } from 'discord.js';
-import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
+﻿import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
 import type { z } from 'zod';
+import type { messageOptions } from '../../zod/utils/discord';
 import { guildId, timestamps } from '../helpers';
-import type { messageOptions } from '../zod/utils/discord';
 
 export const guildSettingSchema = pgSchema('guild_setting');
 

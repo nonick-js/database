@@ -1,0 +1,3 @@
+﻿export const isUniqueArray = (items: unknown[]) => items.length === new Set(items).size;
+
+export const domainRegex = /^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,6}$/;
