@@ -1,6 +1,8 @@
 ﻿import type { BaseMessageOptions } from 'discord.js';
 import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
+import type { z } from 'zod';
 import { guildId, timestamps } from '../helpers';
+import type { messageOptions } from '../zod/utils/discord';
 
 export const guildSettingSchema = pgSchema('guild_setting');
 
@@ -10,7 +12,7 @@ export const joinMessageSetting = guildSettingSchema.table('join_message', {
   enabled: boolean('enabled').notNull(),
   channel: text('channel'),
   ignoreBot: boolean('ignore_bot').notNull(),
-  message: jsonb('message').$type<BaseMessageOptions>().notNull(),
+  message: jsonb('message').$type<z.infer<typeof messageOptions>>().notNull(),
   ...timestamps,
 });
 
@@ -20,7 +22,7 @@ export const leaveMessageSetting = guildSettingSchema.table('leave_message', {
   enabled: boolean('enabled').notNull(),
   channel: text('channel').notNull(),
   ignoreBot: boolean('ignore_bot').notNull(),
-  message: jsonb('message').$type<BaseMessageOptions>().notNull(),
+  message: jsonb('message').$type<z.infer<typeof messageOptions>>().notNull(),
   ...timestamps,
 });
 
@@ -31,7 +33,7 @@ export const reportSetting = guildSettingSchema.table('report', {
   includeModerator: boolean('include_moderator').notNull(),
   showProgressButton: boolean('show_progress_button').notNull(),
   enableMention: boolean('enable_mention').notNull(),
-  mentionRoles: text('mention_roles').array(),
+  mentionRoles: text('mention_roles').array().notNull(),
   ...timestamps,
 });
 
@@ -55,9 +57,9 @@ export const msgExpandSetting = guildSettingSchema.table('message_expand', {
   guildId,
   enabled: boolean('enabled').notNull(),
   allowExternalGuild: boolean('allow_external_guild').notNull(),
-  ignoreChannels: text('ignore_channels').array(),
-  ignoreChannelTypes: text('ignore_channel_types').array(),
-  ignorePrefixes: text('ignore_prefixes').array(),
+  ignoreChannels: text('ignore_channels').array().notNull(),
+  ignoreChannelTypes: text('ignore_channel_types').array().notNull(),
+  ignorePrefixes: text('ignore_prefixes').array().notNull(),
   ...timestamps,
 });
 
@@ -77,7 +79,7 @@ export const autoChangeVerifyLevelSetting = guildSettingSchema.table('auto_chang
 export const autoPublicSetting = guildSettingSchema.table('auto_public', {
   guildId,
   enabled: boolean('enabled').notNull(),
-  channels: text('channels').array(),
+  channels: text('channels').array().notNull(),
   ...timestamps,
 });
 
@@ -85,7 +87,7 @@ export const autoPublicSetting = guildSettingSchema.table('auto_public', {
 export const autoCreateThreadSetting = guildSettingSchema.table('auto_create_thread', {
   guildId,
   enabled: boolean('enabled').notNull(),
-  channels: text('channels').array(),
+  channels: text('channels').array().notNull(),
   ...timestamps,
 });
 
@@ -96,9 +98,9 @@ export const autoModSetting = guildSettingSchema.table('auto_mod', {
   enableDomainFilter: boolean('enable_domain_filter').notNull(),
   enableInviteUrlFilter: boolean('enable_invite_url_filter').notNull(),
   enableTokenFilter: boolean('enable_token_filter').notNull(),
-  domainList: text('domain_list').array(),
-  ignoreChannels: text('ignore_channels').array(),
-  ignoreRoles: text('ignore_roles').array(),
+  domainList: text('domain_list').array().notNull(),
+  ignoreChannels: text('ignore_channels').array().notNull(),
+  ignoreRoles: text('ignore_roles').array().notNull(),
   enableLog: boolean('enable_log').notNull(),
   logChannel: text('log_channel'),
   ...timestamps,
