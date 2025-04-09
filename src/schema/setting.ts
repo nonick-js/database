@@ -1,26 +1,35 @@
 ﻿import { ChannelType, GuildVerificationLevel } from 'discord-api-types/v10';
-import {
-  autoChangeVerifyLevelSetting,
-  autoCreateThreadSetting,
-  autoModSetting,
-  autoPublicSetting,
-  banLogSetting,
-  joinMessageSetting,
-  kickLogSetting,
-  leaveMessageSetting,
-  msgDeleteLogSetting,
-  msgEditLogSetting,
-  msgExpandSetting,
-  reportSetting,
-  timeoutLogSetting,
-  voiceLogSetting,
-} from '../../drizzle/schema/guild-setting';
+import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from '../lib/drizzle';
 import { z } from '../lib/i18n';
-import { domainRegex, isUniqueArray } from '../utils';
-import { Limits, messageOptions, snowflakeRegex } from '../utils/discord';
+import { timestamps } from '../utils/drizzle';
+import { domainRegex, isUniqueArray } from '../utils/zod';
+import { messageOptions, snowflakeRegex } from '../utils/zod/discord';
+import { guild } from './guild';
 
-// 入室メッセージ
+export const settingSchema = pgSchema('public_setting');
+
+const guildId = text()
+  .primaryKey()
+  .references(() => guild.id, { onDelete: 'cascade' });
+
+const baseLogSetting = {
+  guildId,
+  enabled: boolean().notNull(),
+  channel: text(),
+  ...timestamps,
+};
+
+// #region JoinMessage
+export const joinMessageSetting = settingSchema.table('join_message', {
+  guildId,
+  enabled: boolean().notNull(),
+  channel: text(),
+  ignoreBot: boolean().notNull(),
+  message: jsonb().$type<z.infer<typeof messageOptions>>().notNull(),
+  ...timestamps,
+});
+
 export const joinMessageSettingFormSchema = createInsertSchema(joinMessageSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
   message: messageOptions,
@@ -35,8 +44,18 @@ export const joinMessageSettingFormSchema = createInsertSchema(joinMessageSettin
       });
     }
   });
+// #endregion
 
-// 退室メッセージ
+// #region LeaveMessage
+export const leaveMessageSetting = settingSchema.table('leave_message', {
+  guildId,
+  enabled: boolean().notNull(),
+  channel: text().notNull(),
+  ignoreBot: boolean().notNull(),
+  message: jsonb().$type<z.infer<typeof messageOptions>>().notNull(),
+  ...timestamps,
+});
+
 export const leaveMessageSettingFormSchema = createInsertSchema(leaveMessageSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
   message: messageOptions,
@@ -51,13 +70,24 @@ export const leaveMessageSettingFormSchema = createInsertSchema(leaveMessageSett
       });
     }
   });
+// #endregion
 
-// サーバー内通報
+// #region Report
+export const reportSetting = settingSchema.table('report', {
+  guildId,
+  channel: text(),
+  includeModerator: boolean().notNull(),
+  showProgressButton: boolean().notNull(),
+  enableMention: boolean().notNull(),
+  mentionRoles: text().array().notNull(),
+  ...timestamps,
+});
+
 export const reportSettingFormSchema = createInsertSchema(reportSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
   mentionRoles: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Roles)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
 })
   .omit({ guildId: true, createdAt: true, updatedAt: true })
@@ -70,8 +100,11 @@ export const reportSettingFormSchema = createInsertSchema(reportSetting, {
       });
     }
   });
+// #endregion
 
-// イベントログ (タイムアウト)
+// #region EventLog (Timeout)
+export const timeoutLogSetting = settingSchema.table('timeout_log', baseLogSetting);
+
 export const timeoutLogSettingFormSchema = createInsertSchema(timeoutLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -85,8 +118,11 @@ export const timeoutLogSettingFormSchema = createInsertSchema(timeoutLogSetting,
       });
     }
   });
+// #endregion
 
-// イベントログ (Kick)
+// #region EventLog (Kick)
+export const kickLogSetting = settingSchema.table('kick_log', baseLogSetting);
+
 export const kickLogSettingFormSchema = createInsertSchema(kickLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -100,8 +136,11 @@ export const kickLogSettingFormSchema = createInsertSchema(kickLogSetting, {
       });
     }
   });
+// #endregion
 
-// イベントログ (Ban)
+// #region EventLog (Ban)
+export const banLogSetting = settingSchema.table('ban_log', baseLogSetting);
+
 export const banLogSettingFormSchema = createInsertSchema(banLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -115,8 +154,11 @@ export const banLogSettingFormSchema = createInsertSchema(banLogSetting, {
       });
     }
   });
+// #endregion
 
-// イベントログ (VC)
+// #region EventLog (VC)
+export const voiceLogSetting = settingSchema.table('voice_log', baseLogSetting);
+
 export const voiceLogSettingFormSchema = createInsertSchema(voiceLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -130,8 +172,11 @@ export const voiceLogSettingFormSchema = createInsertSchema(voiceLogSetting, {
       });
     }
   });
+// #endregion
 
-// イベントログ (メッセージ削除)
+// #region EventLog (MessageDelete)
+export const msgDeleteLogSetting = settingSchema.table('message_delete_log', baseLogSetting);
+
 export const msgDeleteLogSettingFormSchema = createInsertSchema(msgDeleteLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -145,8 +190,11 @@ export const msgDeleteLogSettingFormSchema = createInsertSchema(msgDeleteLogSett
       });
     }
   });
+// #endregion
 
-// イベントログ (メッセージ編集)
+// #region EventLog (MessageEdit)
+export const msgEditLogSetting = settingSchema.table('message_edit_log', baseLogSetting);
+
 export const msgEditLogSettingFormSchema = createInsertSchema(msgEditLogSetting, {
   channel: (schema) => schema.regex(snowflakeRegex),
 })
@@ -160,14 +208,25 @@ export const msgEditLogSettingFormSchema = createInsertSchema(msgEditLogSetting,
       });
     }
   });
+// #endregion
 
-// メッセージURL展開
+// #region MessageExpand
+export const msgExpandSetting = settingSchema.table('message_expand', {
+  guildId,
+  enabled: boolean().notNull(),
+  allowExternalGuild: boolean().notNull(),
+  ignoreChannels: text().array().notNull(),
+  ignoreChannelTypes: text().array().notNull(),
+  ignorePrefixes: text().array().notNull(),
+  ...timestamps,
+});
+
 const ignorePrefixes = ['!', '?', '.', '#', '$', '%', '&', '^', '<'];
 
 export const msgExpandSettingFormSchema = createInsertSchema(msgExpandSetting, {
   ignoreChannels: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Channels)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
   ignoreChannelTypes: z
     .array(z.coerce.number().pipe(z.nativeEnum(ChannelType)))
@@ -180,8 +239,20 @@ export const msgExpandSettingFormSchema = createInsertSchema(msgExpandSetting, {
       params: { i18n: 'invalid_prefixes' },
     }),
 }).omit({ guildId: true, createdAt: true, updatedAt: true });
+// #endregion
 
-// 自動認証レベル変更
+// #region AutoChangeVerifyLevel
+export const autoChangeVerifyLevelSetting = settingSchema.table('auto_change_verify_level', {
+  guildId,
+  enabled: boolean().notNull(),
+  startHour: integer().notNull(),
+  endHour: integer().notNull(),
+  level: integer().notNull(),
+  enableLog: boolean().notNull(),
+  logChannel: text(),
+  ...timestamps,
+});
+
 export const autoChangeVerifyLevelSettingFormSchema = createInsertSchema(
   autoChangeVerifyLevelSetting,
   {
@@ -209,24 +280,55 @@ export const autoChangeVerifyLevelSettingFormSchema = createInsertSchema(
       });
     }
   });
+// #endregion
 
-// 自動アナウンス公開
+// #region AutoPublic
+export const autoPublicSetting = settingSchema.table('auto_public', {
+  guildId,
+  enabled: boolean().notNull(),
+  channels: text().array().notNull(),
+  ...timestamps,
+});
+
 export const autoPublicSettingFormSchema = createInsertSchema(autoPublicSetting, {
   channels: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Channels)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
 }).omit({ guildId: true, createdAt: true, updatedAt: true });
+// #endregion
 
-// 自動スレッド作成
+// #region AutoCreateThread
+export const autoCreateThreadSetting = settingSchema.table('auto_create_thread', {
+  guildId,
+  enabled: boolean().notNull(),
+  channels: text().array().notNull(),
+  ...timestamps,
+});
+
 export const autoCreateThreadSettingFormSchema = createInsertSchema(autoCreateThreadSetting, {
   channels: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Channels)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
 }).omit({ guildId: true, createdAt: true, updatedAt: true });
+// #endregion
 
-// AutoMod Plus
+// #region AutoMod Plus
+export const autoModSetting = settingSchema.table('auto_mod', {
+  guildId,
+  enabled: boolean().notNull(),
+  enableDomainFilter: boolean().notNull(),
+  enableInviteUrlFilter: boolean().notNull(),
+  enableTokenFilter: boolean().notNull(),
+  domainList: text().array().notNull(),
+  ignoreChannels: text().array().notNull(),
+  ignoreRoles: text().array().notNull(),
+  enableLog: boolean().notNull(),
+  logChannel: text(),
+  ...timestamps,
+});
+
 export const autoModSettingFormSchema = createInsertSchema(autoModSetting, {
   domainList: z.preprocess(
     (v) =>
@@ -246,11 +348,11 @@ export const autoModSettingFormSchema = createInsertSchema(autoModSetting, {
   ),
   ignoreChannels: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Channels)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
   ignoreRoles: z
     .array(z.string().regex(snowflakeRegex))
-    .max(Limits.Guild.Roles)
+    .max(100)
     .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
   logChannel: (schema) => schema.regex(snowflakeRegex),
 })
