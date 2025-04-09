@@ -1,4 +1,7 @@
-﻿providers = ["node"]
+﻿providers = ['node']
+
+[phases.setup]
+nixPkgs = ['...', bun']
 
 [phases.install]
-cmds = ["npm install -g bun", "bun install"]
+cmds = ['bun install']
