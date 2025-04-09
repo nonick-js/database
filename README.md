@@ -8,7 +8,7 @@ NoNICK.jsのデータベースに使用されるDrizzle ORMやZodのスキーマ
 このリポジトリは、単体でDrizzle ORMのスキーマ管理およびマイグレーションツールとして利用できます。
 
 - `bun studio` ...`drizzle-kit studio`
-- `bun build` ... `drizzle-kit generate`
+- `bun generate` ... `drizzle-kit generate`
 - `bun migrate` ... `drizzle-kit migrate`
 
 > 実行前に `.env` ファイルをルートディレクトリに作成し、`DATABASE_URL` を設定してください。  
