@@ -1,2 +1,4 @@
-﻿[phases.setup]
-  nixpkgsArchive = '0d1ef1a839ce0f3282bf24bea2788b9ad659be83'
+﻿providers = ["node"]
+
+[phases.install]
+cmds = ["npm install -g corepack", "corepack enable", "corepack prepare bun@latest --activate", "bun install"]
