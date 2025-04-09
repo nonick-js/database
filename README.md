@@ -1,5 +1,5 @@
 ﻿# NoNICK.js Database
-NoNICK.jsのデータベースに使用されるDrizzle ORMやZodのスキーマを管理するリポジトリ  
+NoNICK.jsのデータベースに使用されるスキーマを管理するリポジトリ  
 
 ## 📑Usage
 
@@ -13,7 +13,7 @@ NoNICK.jsのデータベースに使用されるDrizzle ORMやZodのスキーマ
 
 > 実行前に `.env` ファイルをルートディレクトリに作成し、`DATABASE_URL` を設定してください。  
 > ```
-> DATABASE_URL="postgres://user:password@localhost:5432/mydb"
+> DATABASE_URL="mysql://<user>:<password>@<host>:<port>/<database>"
 > ```
 
 Drizzle Kitの詳細な使用方法については、[公式ドキュメント](https://orm.drizzle.team/docs/kit-overview) を参照してください。
@@ -37,4 +37,5 @@ Drizzle Kitの詳細な使用方法については、[公式ドキュメント](
 また、以下の依存関係を追加する必要があります。
 ```bash
 bun add drizzle-orm drizzle-zod i18next pg zod zod-i18n-map
+bun add -D discord-api-types
 ```
