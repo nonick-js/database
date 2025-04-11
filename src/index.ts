@@ -1,7 +1,6 @@
 ﻿import { drizzle } from 'drizzle-orm/node-postgres';
 
 import * as auditLogSchema from './schema/audit-log';
-import * as authSchema from './schema/auth';
 import * as guildSchema from './schema/guild';
 import * as settingSchma from './schema/setting';
 
@@ -13,6 +12,6 @@ export const createDb = () => {
       ssl: false,
     },
     casing: 'snake_case',
-    schema: { ...authSchema, ...settingSchma, ...guildSchema, ...auditLogSchema },
+    schema: { ...settingSchma, ...guildSchema, ...auditLogSchema },
   });
 };
