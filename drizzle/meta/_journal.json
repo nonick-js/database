@@ -15,6 +15,13 @@
       "when": 1744250677065,
       "tag": "0001_keen_thunderball",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1744490390352,
+      "tag": "0002_sweet_kingpin",
+      "breakpoints": true
     }
   ]
 }
