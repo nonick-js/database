@@ -2,6 +2,7 @@
 import { embed } from './embed';
 
 export const snowflakeRegex = /^\d{17,19}$/;
+export const snowflake = z.string().regex(snowflakeRegex);
 
 export const messageOptions = z.object({
   content: z.string().max(2000).optional(),
