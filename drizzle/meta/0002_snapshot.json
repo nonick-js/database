@@ -1,6 +1,6 @@
 {
-  "id": "d1baee00-d58c-48f0-b5b7-dd54b9bc5b14",
-  "prevId": "a707eb0b-a680-4567-8f0d-3807a262479d",
+  "id": "0aee1256-043e-48d7-b2d0-e543b5a6d2fb",
+  "prevId": "fc64f330-8cf5-46f4-ac6d-d73fce60bae1",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -20,9 +20,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "target_name": {
+          "name": "target_name",
+          "type": "target_name",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
         "action_type": {
           "name": "action_type",
-          "type": "integer",
+          "type": "action_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -58,7 +66,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -1052,7 +1060,36 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.action_type": {
+      "name": "action_type",
+      "schema": "public",
+      "values": [
+        "update_guild_setting"
+      ]
+    },
+    "public.target_name": {
+      "name": "target_name",
+      "schema": "public",
+      "values": [
+        "guild",
+        "join_message",
+        "leave_message",
+        "report",
+        "timeout_log",
+        "kick_log",
+        "ban_log",
+        "voice_log",
+        "message_delete_log",
+        "message_edit_log",
+        "message_expand",
+        "auto_change_verify_level",
+        "auto_public",
+        "auto_create_thread",
+        "auto_mod"
+      ]
+    }
+  },
   "schemas": {
     "public_setting": "public_setting"
   },

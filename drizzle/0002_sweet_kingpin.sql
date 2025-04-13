@@ -1,1 +1,0 @@
-ALTER TABLE "guild" DROP COLUMN "enable_experimental_features";

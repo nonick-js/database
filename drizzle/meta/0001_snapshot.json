@@ -1,6 +1,6 @@
 {
-  "id": "a707eb0b-a680-4567-8f0d-3807a262479d",
-  "prevId": "e12c7b3e-d3af-43ed-8dad-e8e892807a00",
+  "id": "fc64f330-8cf5-46f4-ac6d-d73fce60bae1",
+  "prevId": "15bd8726-af37-4eae-a133-48a7dc72801f",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -20,9 +20,17 @@
           "primaryKey": false,
           "notNull": true
         },
+        "target_name": {
+          "name": "target_name",
+          "type": "audit_log_target_name",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
         "action_type": {
           "name": "action_type",
-          "type": "integer",
+          "type": "audit_log_action_type",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
@@ -58,7 +66,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -90,13 +98,6 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": false
-        },
-        "enable_experimental_features": {
-          "name": "enable_experimental_features",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
         },
         "create_at": {
           "name": "create_at",
@@ -1059,7 +1060,36 @@
       "isRLSEnabled": false
     }
   },
-  "enums": {},
+  "enums": {
+    "public.audit_log_action_type": {
+      "name": "audit_log_action_type",
+      "schema": "public",
+      "values": [
+        "update_guild_setting"
+      ]
+    },
+    "public.audit_log_target_name": {
+      "name": "audit_log_target_name",
+      "schema": "public",
+      "values": [
+        "guild",
+        "join_message",
+        "leave_message",
+        "report",
+        "timeout_log",
+        "kick_log",
+        "ban_log",
+        "voice_log",
+        "message_delete_log",
+        "message_edit_log",
+        "message_expand",
+        "auto_change_verify_level",
+        "auto_public",
+        "auto_create_thread",
+        "auto_mod"
+      ]
+    }
+  },
   "schemas": {
     "public_setting": "public_setting"
   },

@@ -1,69 +1,21 @@
 CREATE SCHEMA "public_setting";
 --> statement-breakpoint
+CREATE TYPE "public"."audit_log_action_type" AS ENUM('update_guild_setting');--> statement-breakpoint
+CREATE TYPE "public"."audit_log_target_name" AS ENUM('guild', 'join_message', 'leave_message', 'report', 'timeout_log', 'kick_log', 'ban_log', 'voice_log', 'message_delete_log', 'message_edit_log', 'message_expand', 'auto_change_verify_level', 'auto_public', 'auto_create_thread', 'auto_mod');--> statement-breakpoint
 CREATE TABLE "audit_log" (
 	"guild_id" text PRIMARY KEY NOT NULL,
 	"author_id" text NOT NULL,
-	"action_type" integer NOT NULL,
+	"target_name" "audit_log_target_name" NOT NULL,
+	"action_type" "audit_log_action_type" NOT NULL,
 	"old_value" jsonb,
 	"new_value" jsonb,
 	"create_at" timestamp DEFAULT now() NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE "account" (
-	"id" text PRIMARY KEY NOT NULL,
-	"account_id" text NOT NULL,
-	"provider_id" text NOT NULL,
-	"user_id" text NOT NULL,
-	"access_token" text,
-	"refresh_token" text,
-	"id_token" text,
-	"access_token_expires_at" timestamp,
-	"refresh_token_expires_at" timestamp,
-	"scope" text,
-	"password" text,
-	"created_at" timestamp NOT NULL,
-	"updated_at" timestamp NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE "session" (
-	"id" text PRIMARY KEY NOT NULL,
-	"expires_at" timestamp NOT NULL,
-	"token" text NOT NULL,
-	"created_at" timestamp NOT NULL,
-	"updated_at" timestamp NOT NULL,
-	"ip_address" text,
-	"user_agent" text,
-	"user_id" text NOT NULL,
-	CONSTRAINT "session_token_unique" UNIQUE("token")
-);
---> statement-breakpoint
-CREATE TABLE "user" (
-	"id" text PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
-	"username" text NOT NULL,
-	"discriminator" text NOT NULL,
-	"email" text NOT NULL,
-	"email_verified" boolean NOT NULL,
-	"image" text,
-	"created_at" timestamp NOT NULL,
-	"updated_at" timestamp NOT NULL,
-	CONSTRAINT "user_email_unique" UNIQUE("email")
-);
---> statement-breakpoint
-CREATE TABLE "verification" (
-	"id" text PRIMARY KEY NOT NULL,
-	"identifier" text NOT NULL,
-	"value" text NOT NULL,
-	"expires_at" timestamp NOT NULL,
-	"created_at" timestamp,
-	"updated_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE "guild" (
 	"id" text PRIMARY KEY NOT NULL,
 	"locale" text DEFAULT 'ja' NOT NULL,
 	"before_verify_level" integer,
-	"enable_experimental_features" boolean DEFAULT false NOT NULL,
 	"create_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp
 );
@@ -202,9 +154,6 @@ CREATE TABLE "public_setting"."voice_log" (
 );
 --> statement-breakpoint
 ALTER TABLE "audit_log" ADD CONSTRAINT "audit_log_guild_id_guild_id_fk" FOREIGN KEY ("guild_id") REFERENCES "public"."guild"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "audit_log" ADD CONSTRAINT "audit_log_author_id_user_id_fk" FOREIGN KEY ("author_id") REFERENCES "public"."user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "public_setting"."auto_change_verify_level" ADD CONSTRAINT "auto_change_verify_level_guild_id_guild_id_fk" FOREIGN KEY ("guild_id") REFERENCES "public"."guild"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "public_setting"."auto_create_thread" ADD CONSTRAINT "auto_create_thread_guild_id_guild_id_fk" FOREIGN KEY ("guild_id") REFERENCES "public"."guild"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "public_setting"."auto_mod" ADD CONSTRAINT "auto_mod_guild_id_guild_id_fk" FOREIGN KEY ("guild_id") REFERENCES "public"."guild"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
