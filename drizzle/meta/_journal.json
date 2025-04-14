@@ -22,6 +22,13 @@
       "when": 1744532516984,
       "tag": "0002_yellow_shiver_man",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744621129625,
+      "tag": "0003_white_magdalene",
+      "breakpoints": true
     }
   ]
 }
