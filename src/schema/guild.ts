@@ -1,6 +1,5 @@
 ﻿import { integer, pgTable, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from '../lib/drizzle';
-import type { TableZodSchemas, WithForm } from '../types';
 import { timestamps } from '../utils/drizzle';
 
 export const guild = pgTable('guild', {
@@ -10,7 +9,7 @@ export const guild = pgTable('guild', {
   ...timestamps,
 });
 
-export const guildSchema: WithForm<TableZodSchemas> = {
+export const guildSchema = {
   db: createInsertSchema(guild),
   form: createInsertSchema(guild).pick({
     locale: true,

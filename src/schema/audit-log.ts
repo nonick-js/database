@@ -1,6 +1,5 @@
 ﻿import { jsonb, pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import type { TableZodSchemas } from '../types';
 import { timestamps } from '../utils/drizzle';
 import { guild } from './guild';
 
@@ -42,6 +41,6 @@ export const auditLog = pgTable('audit_log', {
   createdAt: timestamps.createdAt,
 });
 
-export const auditLogSchema: TableZodSchemas = {
+export const auditLogSchema = {
   db: createInsertSchema(auditLog),
 };

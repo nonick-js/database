@@ -2,7 +2,6 @@
 import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from '../lib/drizzle';
 import { z } from '../lib/i18n';
-import type { TableZodSchemas, WithForm } from '../types';
 import { timestamps } from '../utils/drizzle';
 import { domainRegex, isUniqueArray } from '../utils/zod';
 import { messageOptions, snowflakeRegex } from '../utils/zod/discord';
@@ -31,7 +30,7 @@ export const joinMessageSetting = settingSchema.table('join_message', {
   ...timestamps,
 });
 
-export const joinMessageSettingSchema: WithForm<TableZodSchemas> = {
+export const joinMessageSettingSchema = {
   db: createInsertSchema(joinMessageSetting),
   form: createInsertSchema(joinMessageSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -60,7 +59,7 @@ export const leaveMessageSetting = settingSchema.table('leave_message', {
   ...timestamps,
 });
 
-export const leaveMessageSettingSchema: WithForm<TableZodSchemas> = {
+export const leaveMessageSettingSchema = {
   db: createInsertSchema(leaveMessageSetting),
   form: createInsertSchema(leaveMessageSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -90,7 +89,7 @@ export const reportSetting = settingSchema.table('report', {
   ...timestamps,
 });
 
-export const reportSettingSchema: WithForm<TableZodSchemas> = {
+export const reportSettingSchema = {
   db: createInsertSchema(reportSetting),
   form: createInsertSchema(reportSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -116,7 +115,7 @@ export const reportSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (Timeout)
 export const timeoutLogSetting = settingSchema.table('timeout_log', baseLogSetting);
 
-export const timeoutLogSettingSchema: WithForm<TableZodSchemas> = {
+export const timeoutLogSettingSchema = {
   db: createInsertSchema(timeoutLogSetting),
   form: createInsertSchema(timeoutLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -137,7 +136,7 @@ export const timeoutLogSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (Kick)
 export const kickLogSetting = settingSchema.table('kick_log', baseLogSetting);
 
-export const kickLogSettingSchema: WithForm<TableZodSchemas> = {
+export const kickLogSettingSchema = {
   db: createInsertSchema(kickLogSetting),
   form: createInsertSchema(kickLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -158,7 +157,7 @@ export const kickLogSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (Ban)
 export const banLogSetting = settingSchema.table('ban_log', baseLogSetting);
 
-export const banLogSettingSchema: WithForm<TableZodSchemas> = {
+export const banLogSettingSchema = {
   db: createInsertSchema(banLogSetting),
   form: createInsertSchema(banLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -179,7 +178,7 @@ export const banLogSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (VC)
 export const voiceLogSetting = settingSchema.table('voice_log', baseLogSetting);
 
-export const voiceLogSettingSchema: WithForm<TableZodSchemas> = {
+export const voiceLogSettingSchema = {
   db: createInsertSchema(voiceLogSetting),
   form: createInsertSchema(voiceLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -200,7 +199,7 @@ export const voiceLogSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (MessageDelete)
 export const msgDeleteLogSetting = settingSchema.table('message_delete_log', baseLogSetting);
 
-export const msgDeleteLogSettingSchema: WithForm<TableZodSchemas> = {
+export const msgDeleteLogSettingSchema = {
   db: createInsertSchema(msgDeleteLogSetting),
   form: createInsertSchema(msgDeleteLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -221,7 +220,7 @@ export const msgDeleteLogSettingSchema: WithForm<TableZodSchemas> = {
 // #region EventLog (MessageEdit)
 export const msgEditLogSetting = settingSchema.table('message_edit_log', baseLogSetting);
 
-export const msgEditLogSettingSchema: WithForm<TableZodSchemas> = {
+export const msgEditLogSettingSchema = {
   db: createInsertSchema(msgEditLogSetting),
   form: createInsertSchema(msgEditLogSetting, {
     channel: (schema) => schema.regex(snowflakeRegex),
@@ -252,7 +251,7 @@ export const msgExpandSetting = settingSchema.table('message_expand', {
 
 const ignorePrefixes = ['!', '?', '.', '#', '$', '%', '&', '^', '<'];
 
-export const msgExpandSettingSchema: WithForm<TableZodSchemas> = {
+export const msgExpandSettingSchema = {
   db: createInsertSchema(msgExpandSetting),
   form: createInsertSchema(msgExpandSetting, {
     ignoreChannels: z
@@ -285,7 +284,7 @@ export const autoChangeVerifyLevelSetting = settingSchema.table('auto_change_ver
   ...timestamps,
 });
 
-export const autoChangeVerifyLevelSettingSchema: WithForm<TableZodSchemas> = {
+export const autoChangeVerifyLevelSettingSchema = {
   db: createInsertSchema(autoChangeVerifyLevelSetting),
   form: createInsertSchema(autoChangeVerifyLevelSetting, {
     level: (schema) => schema.pipe(z.nativeEnum(GuildVerificationLevel)),
@@ -322,7 +321,7 @@ export const autoPublicSetting = settingSchema.table('auto_public', {
   ...timestamps,
 });
 
-export const autoPublicSettingSchema: WithForm<TableZodSchemas> = {
+export const autoPublicSettingSchema = {
   db: createInsertSchema(autoPublicSetting),
   form: createInsertSchema(autoPublicSetting, {
     channels: z
@@ -341,7 +340,7 @@ export const autoCreateThreadSetting = settingSchema.table('auto_create_thread',
   ...timestamps,
 });
 
-export const autoCreateThreadSettingSchema: WithForm<TableZodSchemas> = {
+export const autoCreateThreadSettingSchema = {
   db: createInsertSchema(autoCreateThreadSetting),
   form: createInsertSchema(autoCreateThreadSetting, {
     channels: z
@@ -367,7 +366,7 @@ export const autoModSetting = settingSchema.table('auto_mod', {
   ...timestamps,
 });
 
-export const autoModSettingSchema: WithForm<TableZodSchemas> = {
+export const autoModSettingSchema = {
   db: createInsertSchema(autoModSetting),
   form: createInsertSchema(autoModSetting, {
     domainList: z.preprocess(
