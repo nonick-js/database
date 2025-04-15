@@ -4,7 +4,7 @@ import { createInsertSchema } from '../lib/drizzle';
 import { z } from '../lib/i18n';
 import { timestamps } from '../utils/drizzle';
 import { domainRegex, isUniqueArray } from '../utils/zod';
-import { messageOptions, snowflakeRegex } from '../utils/zod/discord';
+import { messageOptions, snowflake, snowflakeRegex } from '../utils/zod/discord';
 import { guild } from './guild';
 
 export const settingSchema = pgSchema('public_setting');
@@ -92,7 +92,8 @@ export const reportSetting = settingSchema.table('report', {
 export const reportSettingSchema = {
   db: createInsertSchema(reportSetting),
   form: createInsertSchema(reportSetting, {
-    channel: (schema) => schema.regex(snowflakeRegex),
+    channel: (schema) =>
+      schema.refine((v) => snowflake.safeParse(v).success, { params: { i18n: 'missing_channel' } }),
     mentionRoles: z
       .array(z.string().regex(snowflakeRegex))
       .max(100)
