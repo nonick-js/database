@@ -92,8 +92,7 @@ export const reportSetting = settingSchema.table('report', {
 export const reportSettingSchema = {
   db: createInsertSchema(reportSetting),
   form: createInsertSchema(reportSetting, {
-    channel: (schema) =>
-      schema.refine((v) => snowflake.safeParse(v).success, { params: { i18n: 'missing_channel' } }),
+    channel: z.string().regex(snowflakeRegex),
     mentionRoles: z
       .array(z.string().regex(snowflakeRegex))
       .max(100)
