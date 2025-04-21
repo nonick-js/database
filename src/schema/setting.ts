@@ -249,7 +249,7 @@ export const msgExpandSetting = settingSchema.table('message_expand', {
   ...timestamps,
 });
 
-const ignorePrefixes = ['!', '?', '.', '#', '$', '%', '&', '^', '<'];
+export const ignorePrefixes = ['!', '?', '.', '#', '$', '%', '&', '^', '<'];
 
 export const msgExpandSettingSchema = {
   db: createInsertSchema(msgExpandSetting),
@@ -259,7 +259,7 @@ export const msgExpandSettingSchema = {
       .max(100)
       .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
     ignoreChannelTypes: z
-      .array(z.coerce.number().pipe(z.nativeEnum(ChannelType)))
+      .array(z.preprocess((v) => Number(v), z.nativeEnum(ChannelType)))
       .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
     ignorePrefixes: z
       .array(z.string())
