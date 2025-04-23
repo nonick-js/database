@@ -11,7 +11,6 @@ export const createDb = () => {
       connectionString: process.env.DATABASE_URL!,
       ssl: false,
     },
-    casing: 'snake_case',
     schema: { ...settingSchma, ...guildSchema, ...auditLogSchema },
   });
 };

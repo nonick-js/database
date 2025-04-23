@@ -32,12 +32,12 @@ export const targetNameEnum = pgEnum('target_name', targetName);
 export const targetNameEnumSchema = createSelectSchema(targetNameEnum);
 
 export const auditLog = pgTable('audit_log', {
-  guildId: text().references(() => guild.id, { onDelete: 'cascade' }),
-  authorId: text().notNull(),
-  targetName: targetNameEnum().notNull(),
-  actionType: actionTypeEnum().notNull(),
-  oldValue: jsonb(),
-  newValue: jsonb(),
+  guildId: text('guild_id').references(() => guild.id, { onDelete: 'cascade' }),
+  authorId: text('author_id').notNull(),
+  targetName: targetNameEnum('target_name').notNull(),
+  actionType: actionTypeEnum('action_type').notNull(),
+  oldValue: jsonb('old_value'),
+  newValue: jsonb('new_value'),
   createdAt: timestamps.createdAt,
 });
 
