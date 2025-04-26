@@ -53,7 +53,7 @@ export const joinMessageSettingSchema = {
 export const leaveMessageSetting = settingSchema.table('leave_message', {
   guildId,
   enabled: boolean('enabled').notNull(),
-  channel: text('channel').notNull(),
+  channel: text('channel'),
   ignoreBot: boolean('ignore_bot').notNull(),
   message: jsonb('message').$type<z.infer<typeof messageOptions>>().notNull(),
   ...timestamps,

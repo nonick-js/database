@@ -29,6 +29,13 @@
       "when": 1744621129625,
       "tag": "0003_white_magdalene",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1745688069015,
+      "tag": "0004_fancy_hiroim",
+      "breakpoints": true
     }
   ]
 }
