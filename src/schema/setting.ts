@@ -287,9 +287,9 @@ export const autoChangeVerifyLevelSetting = settingSchema.table('auto_change_ver
 export const autoChangeVerifyLevelSettingSchema = {
   db: createInsertSchema(autoChangeVerifyLevelSetting),
   form: createInsertSchema(autoChangeVerifyLevelSetting, {
-    level: (schema) => schema.pipe(z.nativeEnum(GuildVerificationLevel)),
-    startHour: (schema) => schema.int().min(0).max(23),
-    endHour: (schema) => schema.int().min(0).max(23),
+    level: z.preprocess((v) => Number(v), z.nativeEnum(GuildVerificationLevel)),
+    startHour: z.preprocess((v) => Number(v), z.number().int().min(0).max(23)),
+    endHour: z.preprocess((v) => Number(v), z.number().int().min(0).max(23)),
     logChannel: (schema) => schema.regex(snowflakeRegex),
   })
     .omit({ guildId: true, createdAt: true, updatedAt: true })
