@@ -383,7 +383,8 @@ export const autoModSettingSchema = {
         .max(20)
         .refine((v) => v.every((domain) => domainRegex.test(domain)), {
           params: { i18n: 'invalid_domains' },
-        }),
+        })
+        .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
     ),
     ignoreChannels: z
       .array(z.string().regex(snowflakeRegex))
