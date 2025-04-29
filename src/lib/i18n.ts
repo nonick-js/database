@@ -18,6 +18,7 @@ i18next.init({
         duplicate_item: '重複した値が含まれています',
         embed_content_exceeded: '埋め込みの文字数が合計で6000文字を超えています',
         embed_content_required: '埋め込みの文字数は合計で1文字以上である必要があります',
+        message_content_required: 'メッセージか埋め込みを追加する必要があります',
       },
     },
   },

@@ -41,10 +41,22 @@ export const embed = z
     url: z.string().url().optional(),
     timestamp: z.string().datetime().optional(),
     color: z.number().int().optional(),
-    footer: z.preprocess((v) => validateObject(v), embedFooter.optional()),
-    image: z.preprocess((v) => validateObject(v), embedImage.optional()),
-    thumbnail: z.preprocess((v) => validateObject(v), embedThumbnail.optional()),
-    author: z.preprocess((v) => validateObject(v), embedAuthor.optional()),
+    footer: embedFooter
+      .optional()
+      .or(z.object({}))
+      .transform((v) => validateObject<z.input<typeof embedFooter>>(v)),
+    image: embedImage
+      .optional()
+      .or(z.object({}))
+      .transform((v) => validateObject<z.input<typeof embedImage>>(v)),
+    thumbnail: embedThumbnail
+      .optional()
+      .or(z.object({}))
+      .transform((v) => validateObject<z.input<typeof embedThumbnail>>(v)),
+    author: embedAuthor
+      .optional()
+      .or(z.object({}))
+      .transform((v) => validateObject<z.input<typeof embedAuthor>>(v)),
     fields: z.array(embedField).max(25).optional(),
   })
   .superRefine((v, ctx) => {
