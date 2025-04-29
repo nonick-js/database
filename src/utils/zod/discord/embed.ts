@@ -40,7 +40,11 @@ export const embed = z
     description: z.string().max(4096).optional(),
     url: z.string().url().optional(),
     timestamp: z.string().datetime().optional(),
-    color: z.number().int().optional(),
+    color: z
+      .string()
+      .regex(/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
+      .transform((v) => Number.parseInt(v.slice(1), 16))
+      .optional(),
     footer: embedFooter
       .optional()
       .or(z.object({}))
