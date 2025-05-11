@@ -9,7 +9,7 @@ export const report = pgTable('report', {
     .notNull(),
   channelId: text('channel_id').notNull(),
   threadId: text('thread_id').notNull(),
-  targetUserId: text('target_user_id'),
+  targetUserId: text('target_user_id').notNull(),
   targetChannelId: text('target_channel_id'),
   targetMessageId: text('target_message_id'),
   createdAt: timestamps.createdAt,
