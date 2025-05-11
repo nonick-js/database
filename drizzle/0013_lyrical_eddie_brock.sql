@@ -1,0 +1,1 @@
+ALTER TABLE "public_setting"."report" DROP COLUMN "group_duplicate_reports";
