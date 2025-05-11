@@ -1,16 +1,15 @@
-﻿import { pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+﻿import { pgTable, text } from 'drizzle-orm/pg-core';
 import { timestamps } from '../utils/drizzle';
-import { guild } from './guild';
-
-export const reportTypeEnum = pgEnum('report_type', ['message', 'user']);
+import { reportSetting } from './setting';
 
 export const report = pgTable('report', {
   guildId: text('guild_id')
-    .references(() => guild.id, { onDelete: 'cascade' })
+    .references(() => reportSetting.guildId, { onDelete: 'cascade' })
     .notNull(),
-  type: reportTypeEnum('type').notNull(),
-  userId: text('user_id').notNull(),
-  channelId: text('channel_id'),
-  messageId: text('message_id'),
-  createAt: timestamps.createdAt,
+  channelId: text('channel_id').notNull(),
+  threadId: text('thread_id').notNull(),
+  targetUserId: text('target_user_id').notNull(),
+  targetChannelId: text('target_channel_id'),
+  targetMessageId: text('target_message_id'),
+  createdAt: timestamps.createdAt,
 });
