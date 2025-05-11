@@ -83,7 +83,6 @@ export const reportSetting = settingSchema.table('report', {
   guildId,
   channel: text('channel'),
   includeModerator: boolean('include_moderator').notNull(),
-  showProgressButton: boolean('show_progress_button').notNull(),
   showModerateLog: boolean('show_moderate_log').default(true).notNull(),
   enableMention: boolean('enable_mention').notNull(),
   mentionRoles: text('mention_roles').array().notNull(),
