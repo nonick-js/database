@@ -1,4 +1,4 @@
-﻿import { pgTable, text, uuid } from 'drizzle-orm/pg-core';
+﻿import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { timestamps } from '../utils/drizzle';
 import { reportSetting } from './setting';
 
@@ -13,4 +13,5 @@ export const report = pgTable('report', {
   targetChannelId: text('target_channel_id'),
   targetMessageId: text('target_message_id'),
   createdAt: timestamps.createdAt,
+  closedAt: timestamp('closed_at'),
 });

@@ -99,6 +99,13 @@
       "when": 1746982854050,
       "tag": "0013_lyrical_eddie_brock",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1746985432188,
+      "tag": "0014_lively_arclight",
+      "breakpoints": true
     }
   ]
 }
