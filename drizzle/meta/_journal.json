@@ -43,6 +43,20 @@
       "when": 1745758926552,
       "tag": "0005_minor_power_pack",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1746963081219,
+      "tag": "0006_stormy_sentinels",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1746964748332,
+      "tag": "0007_parallel_nico_minoru",
+      "breakpoints": true
     }
   ]
 }

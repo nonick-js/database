@@ -84,6 +84,10 @@ export const reportSetting = settingSchema.table('report', {
   channel: text('channel'),
   includeModerator: boolean('include_moderator').notNull(),
   showProgressButton: boolean('show_progress_button').notNull(),
+  showModerateLog: boolean('show_moderate_log').default(true).notNull(),
+  groupDuplicateReports: boolean('group_duplicate_reports')
+    .default(false)
+    .notNull(),
   enableMention: boolean('enable_mention').notNull(),
   mentionRoles: text('mention_roles').array().notNull(),
   ...timestamps,

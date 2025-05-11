@@ -1,0 +1,2 @@
+ALTER TABLE "public_setting"."report" ADD COLUMN "show_moderate_log" boolean DEFAULT true NOT NULL;--> statement-breakpoint
+ALTER TABLE "public_setting"."report" ADD COLUMN "group_duplicate_reports" boolean DEFAULT false NOT NULL;
