@@ -78,6 +78,20 @@
       "when": 1746967391244,
       "tag": "0010_purple_tiger_shark",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1746979120480,
+      "tag": "0011_serious_namora",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1746979308513,
+      "tag": "0012_tidy_winter_soldier",
+      "breakpoints": true
     }
   ]
 }
