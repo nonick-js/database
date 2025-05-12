@@ -1,12 +1,5 @@
 ﻿import { ChannelType, GuildVerificationLevel } from 'discord-api-types/v10';
-import {
-  boolean,
-  integer,
-  jsonb,
-  pgEnum,
-  pgSchema,
-  text,
-} from 'drizzle-orm/pg-core';
+import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from '../lib/drizzle';
 import { z } from '../lib/i18n';
 import { timestamps } from '../utils/drizzle';
@@ -86,18 +79,11 @@ export const leaveMessageSettingSchema = {
 // #endregion
 
 // #region Report
-export const reportChannelTypeEnum = pgEnum('report_channel_type_enum', [
-  'text',
-  'forum',
-]);
-
 export const reportSetting = settingSchema.table('report', {
   guildId,
   channel: text('channel'),
-  forumChannel: text('forum_channel'),
   forumCompletedTag: text('forum_completed_tag'),
   forumIgnoredTag: text('forum_ignored_tag'),
-  channelType: reportChannelTypeEnum('channel_type').default('text').notNull(),
   includeModerator: boolean('include_moderator').notNull(),
   showModerateLog: boolean('show_moderate_log').default(true).notNull(),
   enableMention: boolean('enable_mention').notNull(),
