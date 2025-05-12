@@ -127,6 +127,20 @@
       "when": 1747008462590,
       "tag": "0017_lively_firebird",
       "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1747028948160,
+      "tag": "0018_brainy_peter_quill",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1747029534104,
+      "tag": "0019_secret_salo",
+      "breakpoints": true
     }
   ]
 }
