@@ -1,0 +1,1 @@
+ALTER TYPE "public"."target_name" ADD VALUE 'verification';

@@ -23,6 +23,7 @@ const targetName = [
   'auto_public',
   'auto_create_thread',
   'auto_mod',
+  'verification',
 ] as const;
 
 export const actionTypeEnum = pgEnum('action_type', actionType);

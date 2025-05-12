@@ -1,5 +1,5 @@
 ﻿import { ChannelType, GuildVerificationLevel } from 'discord-api-types/v10';
-import { boolean, integer, jsonb, pgSchema, text } from 'drizzle-orm/pg-core';
+import { boolean, integer, jsonb, pgEnum, pgSchema, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from '../lib/drizzle';
 import { z } from '../lib/i18n';
 import { timestamps } from '../utils/drizzle';
@@ -113,10 +113,7 @@ export const reportSettingSchema = {
 // #endregion
 
 // #region EventLog (Timeout)
-export const timeoutLogSetting = settingSchema.table(
-  'timeout_log',
-  baseLogSetting,
-);
+export const timeoutLogSetting = settingSchema.table('timeout_log', baseLogSetting);
 
 export const timeoutLogSettingSchema = {
   db: createInsertSchema(timeoutLogSetting),
@@ -200,10 +197,7 @@ export const voiceLogSettingSchema = {
 // #endregion
 
 // #region EventLog (MessageDelete)
-export const msgDeleteLogSetting = settingSchema.table(
-  'message_delete_log',
-  baseLogSetting,
-);
+export const msgDeleteLogSetting = settingSchema.table('message_delete_log', baseLogSetting);
 
 export const msgDeleteLogSettingSchema = {
   db: createInsertSchema(msgDeleteLogSetting),
@@ -224,10 +218,7 @@ export const msgDeleteLogSettingSchema = {
 // #endregion
 
 // #region EventLog (MessageEdit)
-export const msgEditLogSetting = settingSchema.table(
-  'message_edit_log',
-  baseLogSetting,
-);
+export const msgEditLogSetting = settingSchema.table('message_edit_log', baseLogSetting);
 
 export const msgEditLogSettingSchema = {
   db: createInsertSchema(msgEditLogSetting),
@@ -282,19 +273,16 @@ export const msgExpandSettingSchema = {
 // #endregion
 
 // #region AutoChangeVerifyLevel
-export const autoChangeVerifyLevelSetting = settingSchema.table(
-  'auto_change_verify_level',
-  {
-    guildId,
-    enabled: boolean('enabled').notNull(),
-    startHour: integer('start_hour').notNull(),
-    endHour: integer('end_hour').notNull(),
-    level: integer('level').notNull(),
-    enableLog: boolean('enable_log').notNull(),
-    logChannel: text('log_channel'),
-    ...timestamps,
-  },
-);
+export const autoChangeVerifyLevelSetting = settingSchema.table('auto_change_verify_level', {
+  guildId,
+  enabled: boolean('enabled').notNull(),
+  startHour: integer('start_hour').notNull(),
+  endHour: integer('end_hour').notNull(),
+  level: integer('level').notNull(),
+  enableLog: boolean('enable_log').notNull(),
+  logChannel: text('log_channel'),
+  ...timestamps,
+});
 
 export const autoChangeVerifyLevelSettingSchema = {
   db: createInsertSchema(autoChangeVerifyLevelSetting),
@@ -345,15 +333,12 @@ export const autoPublicSettingSchema = {
 // #endregion
 
 // #region AutoCreateThread
-export const autoCreateThreadSetting = settingSchema.table(
-  'auto_create_thread',
-  {
-    guildId,
-    enabled: boolean('enabled').notNull(),
-    channels: text('channels').array().notNull(),
-    ...timestamps,
-  },
-);
+export const autoCreateThreadSetting = settingSchema.table('auto_create_thread', {
+  guildId,
+  enabled: boolean('enabled').notNull(),
+  channels: text('channels').array().notNull(),
+  ...timestamps,
+});
 
 export const autoCreateThreadSettingSchema = {
   db: createInsertSchema(autoCreateThreadSetting),
@@ -422,4 +407,16 @@ export const autoModSettingSchema = {
       }
     }),
 };
+// #endregion
+
+// #region Verification
+export const captchaTypeEnum = pgEnum('captcha_type', ['button', 'image', 'web']);
+
+export const verificationSetting = settingSchema.table('verification', {
+  guildId,
+  enabled: boolean('enabled').notNull(),
+  role: text('role'),
+  captchaType: captchaTypeEnum('captcha_type').notNull(),
+  ...timestamps,
+});
 // #endregion
