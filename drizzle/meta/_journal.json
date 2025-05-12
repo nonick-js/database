@@ -120,6 +120,13 @@
       "when": 1746992858778,
       "tag": "0016_green_tinkerer",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1747008462590,
+      "tag": "0017_lively_firebird",
+      "breakpoints": true
     }
   ]
 }
