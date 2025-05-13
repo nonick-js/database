@@ -1,6 +1,4 @@
 ﻿import { jsonb, pgEnum, pgTable, text, uuid } from 'drizzle-orm/pg-core';
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import { z } from 'zod';
 import { timestamps } from '../utils/drizzle';
 import { guild } from './guild';
 
@@ -27,10 +25,7 @@ const targetName = [
 ] as const;
 
 export const actionTypeEnum = pgEnum('action_type', actionType);
-export const actionTypeEnumSchema = createSelectSchema(actionTypeEnum);
-
 export const targetNameEnum = pgEnum('target_name', targetName);
-export const targetNameEnumSchema = createSelectSchema(targetNameEnum);
 
 export const auditLog = pgTable('audit_log', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -42,10 +37,3 @@ export const auditLog = pgTable('audit_log', {
   newValue: jsonb('new_value').$type<unknown>(),
   createdAt: timestamps.createdAt,
 });
-
-export const auditLogSelectSchema = {
-  db: createSelectSchema(auditLog, {
-    oldValue: z.unknown(),
-    newValue: z.unknown(),
-  }),
-};
