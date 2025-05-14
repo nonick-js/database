@@ -90,35 +90,10 @@ export const reportSetting = settingSchema.table('report', {
   mentionRoles: text('mention_roles').array().notNull(),
   ...timestamps,
 });
-
-export const reportSettingSchema = {
-  db: createInsertSchema(reportSetting),
-  form: createInsertSchema(reportSetting, {
-    channel: z.string().regex(snowflakeRegex),
-    mentionRoles: z
-      .array(z.string().regex(snowflakeRegex))
-      .max(100)
-      .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
-  })
-    .omit({ guildId: true, createdAt: true, updatedAt: true })
-    .superRefine((v, ctx) => {
-      if (v.enableMention && !v.mentionRoles.length) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          params: { i18n: 'missing_role' },
-          path: ['mentionRoles'],
-        });
-      }
-    }),
-};
-
 // #endregion
 
 // #region EventLog (Timeout)
-export const timeoutLogSetting = settingSchema.table(
-  'timeout_log',
-  baseLogSetting,
-);
+export const timeoutLogSetting = settingSchema.table('timeout_log', baseLogSetting);
 
 export const timeoutLogSettingSchema = {
   db: createInsertSchema(timeoutLogSetting),
@@ -202,10 +177,7 @@ export const voiceLogSettingSchema = {
 // #endregion
 
 // #region EventLog (MessageDelete)
-export const msgDeleteLogSetting = settingSchema.table(
-  'message_delete_log',
-  baseLogSetting,
-);
+export const msgDeleteLogSetting = settingSchema.table('message_delete_log', baseLogSetting);
 
 export const msgDeleteLogSettingSchema = {
   db: createInsertSchema(msgDeleteLogSetting),
@@ -226,10 +198,7 @@ export const msgDeleteLogSettingSchema = {
 // #endregion
 
 // #region EventLog (MessageEdit)
-export const msgEditLogSetting = settingSchema.table(
-  'message_edit_log',
-  baseLogSetting,
-);
+export const msgEditLogSetting = settingSchema.table('message_edit_log', baseLogSetting);
 
 export const msgEditLogSettingSchema = {
   db: createInsertSchema(msgEditLogSetting),
@@ -284,19 +253,16 @@ export const msgExpandSettingSchema = {
 // #endregion
 
 // #region AutoChangeVerifyLevel
-export const autoChangeVerifyLevelSetting = settingSchema.table(
-  'auto_change_verify_level',
-  {
-    guildId,
-    enabled: boolean('enabled').notNull(),
-    startHour: integer('start_hour').notNull(),
-    endHour: integer('end_hour').notNull(),
-    level: integer('level').notNull(),
-    enableLog: boolean('enable_log').notNull(),
-    logChannel: text('log_channel'),
-    ...timestamps,
-  },
-);
+export const autoChangeVerifyLevelSetting = settingSchema.table('auto_change_verify_level', {
+  guildId,
+  enabled: boolean('enabled').notNull(),
+  startHour: integer('start_hour').notNull(),
+  endHour: integer('end_hour').notNull(),
+  level: integer('level').notNull(),
+  enableLog: boolean('enable_log').notNull(),
+  logChannel: text('log_channel'),
+  ...timestamps,
+});
 
 export const autoChangeVerifyLevelSettingSchema = {
   db: createInsertSchema(autoChangeVerifyLevelSetting),
@@ -347,15 +313,12 @@ export const autoPublicSettingSchema = {
 // #endregion
 
 // #region AutoCreateThread
-export const autoCreateThreadSetting = settingSchema.table(
-  'auto_create_thread',
-  {
-    guildId,
-    enabled: boolean('enabled').notNull(),
-    channels: text('channels').array().notNull(),
-    ...timestamps,
-  },
-);
+export const autoCreateThreadSetting = settingSchema.table('auto_create_thread', {
+  guildId,
+  enabled: boolean('enabled').notNull(),
+  channels: text('channels').array().notNull(),
+  ...timestamps,
+});
 
 export const autoCreateThreadSettingSchema = {
   db: createInsertSchema(autoCreateThreadSetting),
