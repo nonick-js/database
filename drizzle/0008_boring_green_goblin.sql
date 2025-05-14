@@ -1,1 +1,0 @@
-ALTER TABLE "public_setting"."report" ALTER COLUMN "channel" SET NOT NULL;

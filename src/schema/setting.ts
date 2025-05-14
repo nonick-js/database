@@ -85,7 +85,7 @@ export const reportSetting = settingSchema.table('report', {
   forumCompletedTag: text('forum_completed_tag'),
   forumIgnoredTag: text('forum_ignored_tag'),
   includeModerator: boolean('include_moderator').notNull(),
-  showModerateLog: boolean('show_moderate_log').default(true).notNull(),
+  showModerateLog: boolean('show_moderate_log').notNull(),
   enableMention: boolean('enable_mention').notNull(),
   mentionRoles: text('mention_roles').array().notNull(),
   ...timestamps,

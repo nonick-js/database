@@ -1,5 +1,5 @@
 {
-  "id": "81950ab3-0f75-4d3c-b06c-ae74d70b15b9",
+  "id": "e5ca1762-a605-4101-a00e-dab274111eaf",
   "prevId": "fa284468-e10c-4368-8c32-24f4744fb158",
   "version": "7",
   "dialect": "postgresql",
@@ -965,7 +965,7 @@
           "name": "channel",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "forum_completed_tag": {
           "name": "forum_completed_tag",
@@ -989,8 +989,7 @@
           "name": "show_moderate_log",
           "type": "boolean",
           "primaryKey": false,
-          "notNull": true,
-          "default": true
+          "notNull": true
         },
         "enable_mention": {
           "name": "enable_mention",
