@@ -1,1 +1,0 @@
-ALTER TABLE "report" ALTER COLUMN "target_user_id" SET NOT NULL;

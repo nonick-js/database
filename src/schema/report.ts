@@ -1,11 +1,11 @@
 ﻿import { pgTable, text, uuid } from 'drizzle-orm/pg-core';
 import { timestamps } from '../utils/drizzle';
-import { reportSetting } from './setting';
+import { guild } from './guild';
 
 export const report = pgTable('report', {
   id: uuid('id').primaryKey().defaultRandom(),
   guildId: text('guild_id')
-    .references(() => reportSetting.guildId, { onDelete: 'cascade' })
+    .references(() => guild.id, { onDelete: 'cascade' })
     .notNull(),
   channelId: text('channel_id').notNull(),
   threadId: text('thread_id').notNull(),

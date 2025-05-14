@@ -1,1 +1,0 @@
-ALTER TABLE "public_setting"."report" DROP COLUMN "show_progress_button";
