@@ -81,7 +81,7 @@ export const leaveMessageSettingSchema = {
 // #region Report
 export const reportSetting = settingSchema.table('report', {
   guildId,
-  channel: text('channel'),
+  channel: text('channel').notNull(),
   forumCompletedTag: text('forum_completed_tag'),
   forumIgnoredTag: text('forum_ignored_tag'),
   includeModerator: boolean('include_moderator').notNull(),
