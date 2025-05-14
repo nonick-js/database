@@ -141,6 +141,13 @@
       "when": 1747029534104,
       "tag": "0019_secret_salo",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1747212114000,
+      "tag": "0020_premium_mister_sinister",
+      "breakpoints": true
     }
   ]
 }
