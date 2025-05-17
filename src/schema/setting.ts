@@ -81,35 +81,15 @@ export const leaveMessageSettingSchema = {
 // #region Report
 export const reportSetting = settingSchema.table('report', {
   guildId,
-  channel: text('channel'),
+  channel: text('channel').notNull(),
+  forumCompletedTag: text('forum_completed_tag'),
+  forumIgnoredTag: text('forum_ignored_tag'),
   includeModerator: boolean('include_moderator').notNull(),
-  showProgressButton: boolean('show_progress_button').notNull(),
+  showModerateLog: boolean('show_moderate_log').notNull(),
   enableMention: boolean('enable_mention').notNull(),
   mentionRoles: text('mention_roles').array().notNull(),
   ...timestamps,
 });
-
-export const reportSettingSchema = {
-  db: createInsertSchema(reportSetting),
-  form: createInsertSchema(reportSetting, {
-    channel: z.string().regex(snowflakeRegex),
-    mentionRoles: z
-      .array(z.string().regex(snowflakeRegex))
-      .max(100)
-      .refine(isUniqueArray, { params: { i18n: 'duplicate_item' } }),
-  })
-    .omit({ guildId: true, createdAt: true, updatedAt: true })
-    .superRefine((v, ctx) => {
-      if (v.enableMention && !v.mentionRoles.length) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          params: { i18n: 'missing_role' },
-          path: ['mentionRoles'],
-        });
-      }
-    }),
-};
-
 // #endregion
 
 // #region EventLog (Timeout)
